@@ -1,4 +1,6 @@
 fun main(){
-    Lexer().error("Error message")
-    println("HELLO")
+    val lexer = Lexer()
+    print(lexer.getChar())
+    print(lexer.getChar())
+    print(lexer.getChar())
 }
