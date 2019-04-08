@@ -1,4 +1,6 @@
-enum class SymbAndWords {
+package keywords
+
+enum class SymbolsAndStatements {
     NUM,
     ID,
     IF,
