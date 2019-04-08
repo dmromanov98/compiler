@@ -1,10 +1,9 @@
+import keywords.SymbolsAndStatements
+
 fun main() {
     val lexer = Lexer()
-    Lexer.filePath = "src/resources/Main.txt"
-    println(lexer.getCharsFromFile())
+    Lexer.filePath = "src/main/resources/Main.txt"
+    println("Text from file: ${lexer.getCharsFromFile()}")
     var a = lexer.nextToken()
-    while(!a!!.containsKey(SymbAndWords.EOF)){
-        println(a)
-        a = lexer.nextToken()
-    }
+    
 }

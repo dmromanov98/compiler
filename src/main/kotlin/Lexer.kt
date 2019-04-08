@@ -1,3 +1,6 @@
+import keywords.ConditionalStatements
+import keywords.Symbols
+import keywords.SymbolsAndStatements
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileNotFoundException
@@ -15,6 +18,12 @@ class Lexer {
 
         @JvmStatic
         var filePath: String? = null
+
+        @JvmStatic
+        var symb: SymbolsAndStatements? = null
+
+        @JvmStatic
+        var value: String? = null
 
     }
 
@@ -72,13 +81,11 @@ class Lexer {
     /**
      * Generating token
      */
-    fun nextToken(): MutableMap<SymbAndWords, String?>? {
-        var symb: SymbAndWords? = null
-        var value: String? = null
+    fun nextToken(){
 
         while (symb == null) {
             when {
-                (charValue == null) -> symb = SymbAndWords.EOF
+                (charValue == null) -> symb = SymbolsAndStatements.EOF
 
                 charValue!!.isWhitespace() -> charValue = nextChar()
 
@@ -86,7 +93,7 @@ class Lexer {
                     when (val symbol = Symbols.getSymbolByChar(charValue!!)) {
                         null -> error("Character definition error: $charValue")
                         else -> {
-                            symb = SymbAndWords.valueOf(symbol.name)
+                            symb = SymbolsAndStatements.valueOf(symbol.name)
                         }
                     }
                     charValue = nextChar()
@@ -99,7 +106,7 @@ class Lexer {
                         charValue = nextChar()
                     }
                     value = intValue.toString()
-                    symb = SymbAndWords.NUM
+                    symb = SymbolsAndStatements.NUM
                 }
 
                 charValue!!.isLetter() -> {
@@ -109,15 +116,15 @@ class Lexer {
                         charValue = nextChar()
                     }
                     when {
-                        KeyWords.isKeyWord(ident) ->
-                            when (val keyWord = KeyWords.getSymbolByKeyWord(ident)) {
+                        ConditionalStatements.isKeyWord(ident) ->
+                            when (val keyWord = ConditionalStatements.getSymbolByKeyWord(ident)) {
                                 null -> error("KeyWord definition error: $ident")
                                 else -> {
-                                    symb = SymbAndWords.valueOf(keyWord.name)
+                                    symb = SymbolsAndStatements.valueOf(keyWord.name)
                                 }
                             }
                         ident.length == 1 -> {
-                            symb = SymbAndWords.ID
+                            symb = SymbolsAndStatements.ID
                             value = ident
                         }
                         else -> error("Unexpected symbol: $charValue")
@@ -127,7 +134,7 @@ class Lexer {
             }
 
         }
-        return mutableMapOf(Pair(symb, value))
+
     }
 
 }
