@@ -5,7 +5,7 @@ class VirtualMachine {
 
     fun run(program: MutableList<Instructions>) {
         var ar = arrayOfNulls<Instructions>(26)
-        val stack = Stack<Instructions>()
+        val stack = Stack<Int>()
         var pc = 0
         var arg: Instructions? = null
         while (true) {
@@ -14,7 +14,7 @@ class VirtualMachine {
                 arg = program[pc + 1]
 
             if (op == Instructions.IFETCH) {
-                stack.add(arg)
+                stack.add(ar[arg])
                 pc += 2
             }else if  (op == Instructions.ISTORE){
 
