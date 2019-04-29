@@ -81,11 +81,12 @@ class Lexer {
     /**
      * Generating token
      */
-    fun nextToken(){
-
-        while (symb == null) {
+    fun nextToken() {
+        var tmpSymb: SymbolsAndStatements? = null
+        var tmpValue: String? = null
+        while (tmpSymb == null) {
             when {
-                (charValue == null) -> symb = SymbolsAndStatements.EOF
+                (charValue == null) -> tmpSymb = SymbolsAndStatements.EOF
 
                 charValue!!.isWhitespace() -> charValue = nextChar()
 
@@ -93,7 +94,7 @@ class Lexer {
                     when (val symbol = Symbols.getSymbolByChar(charValue!!)) {
                         null -> error("Character definition error: $charValue")
                         else -> {
-                            symb = SymbolsAndStatements.valueOf(symbol.name)
+                            tmpSymb = SymbolsAndStatements.valueOf(symbol.name)
                         }
                     }
                     charValue = nextChar()
@@ -105,8 +106,8 @@ class Lexer {
                         intValue = intValue * 10 + charValue!!.toString().toInt()
                         charValue = nextChar()
                     }
-                    value = intValue.toString()
-                    symb = SymbolsAndStatements.NUM
+                    tmpValue = intValue.toString()
+                    tmpSymb = SymbolsAndStatements.NUM
                 }
 
                 charValue!!.isLetter() -> {
@@ -120,12 +121,12 @@ class Lexer {
                             when (val keyWord = ConditionalStatements.getSymbolByKeyWord(ident)) {
                                 null -> error("KeyWord definition error: $ident")
                                 else -> {
-                                    symb = SymbolsAndStatements.valueOf(keyWord.name)
+                                    tmpSymb = SymbolsAndStatements.valueOf(keyWord.name)
                                 }
                             }
                         ident.length == 1 -> {
-                            symb = SymbolsAndStatements.ID
-                            value = ident
+                            tmpSymb = SymbolsAndStatements.ID
+                            tmpValue = ident
                         }
                         else -> error("Unexpected symbol: $charValue")
                     }
@@ -134,7 +135,8 @@ class Lexer {
             }
 
         }
-
+        symb = tmpSymb
+        value = tmpValue
     }
 
 }
