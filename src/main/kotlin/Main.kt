@@ -13,10 +13,17 @@ fun main() {
     Lexer.charPosition = -1
     Lexer.symb = null
     Lexer.value = null
-
-    println("\nNODES:")
+    var compiler = Compiler()
     val node = parser.parse()
-    out(node)
+    var program = compiler.compile(node)
+    var virtualMachine = VirtualMachine()
+//    println("\nNODES:")
+//    out(node)
+    program.forEach { println(it) }
+    virtualMachine.run(program)
+
+
+
 
 
 }

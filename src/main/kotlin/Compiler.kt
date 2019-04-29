@@ -10,7 +10,7 @@ class Compiler {
         pc++
     }
 
-    fun compile(node: Node?) {
+    fun compile(node: Node?): MutableList<Any?> {
         when {
             (node!!.kind == ParserEnums.VAR) -> {
                 generation(Instructions.IFETCH)
@@ -93,5 +93,6 @@ class Compiler {
             }
 
         }
+        return program
     }
 }
