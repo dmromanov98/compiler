@@ -15,15 +15,15 @@ class Parser {
         exitProcess(16)
     }
 
-    private fun getKey(token: MutableMap<SymbolsAndStatements, String?>): SymbolsAndStatements? = token.keys.first()
-
-    var token: MutableMap<SymbolsAndStatements, String?>? = null
-
     private fun term(): Node? {
         return if (Lexer.symb != null && Lexer.symb == SymbolsAndStatements.ID) {
-            Node(ParserEnums.VAR, Lexer.value!!)
+            val n = Node(ParserEnums.VAR, Lexer.value!!)
+            lexer.nextToken()
+            n
         } else if (Lexer.symb != null && Lexer.symb == SymbolsAndStatements.NUM) {
-            Node(ParserEnums.CONST, Lexer.value!!)
+            val n = Node(ParserEnums.CONST, Lexer.value!!)
+            lexer.nextToken()
+            n
         } else {
             return parenExpr()
         }
@@ -71,6 +71,7 @@ class Parser {
             error("\"(\" expected")
 
         lexer.nextToken()
+
         val n = expr()
 
         if (Lexer.symb != SymbolsAndStatements.RPAR)
@@ -81,35 +82,35 @@ class Parser {
     }
 
     var n: Node? = null
-    private fun statement(): Node? {
 
+    private fun statement(): Node? {
         if (Lexer.symb == SymbolsAndStatements.IF) {
             n = Node(ParserEnums.IF1)
             lexer.nextToken()
-            n = n!!.copy(op1 = parenExpr())
-            n = n!!.copy(op2 = statement())
+            n = n!!.copy(op1 = parenExpr(), op2 = statement())
             if (Lexer.symb == SymbolsAndStatements.ELSE) {
                 n = n!!.copy(kind = ParserEnums.IF2)
                 lexer.nextToken()
                 n = n!!.copy(op3 = statement())
             }
         } else if (Lexer.symb == SymbolsAndStatements.WHILE) {
-            n = Node(ParserEnums.IF1)
+            n = Node(ParserEnums.WHILE)
             lexer.nextToken()
-            n = n!!.copy(op1 = parenExpr())
-            n = n!!.copy(op2 = statement())
+            n = n!!.copy(op1 = parenExpr(), op2 = statement())
         } else if (Lexer.symb == SymbolsAndStatements.DO) {
             n = Node(ParserEnums.DO)
             lexer.nextToken()
-            n = n!!.copy(op1 = parenExpr())
+            n = n!!.copy(op1 = statement())
             if (Lexer.symb != SymbolsAndStatements.WHILE) {
                 error("\"while\" expected")
             }
             lexer.nextToken()
             n = n!!.copy(op2 = parenExpr())
+
             if (Lexer.symb == SymbolsAndStatements.SEMICOLON) {
                 error("\";\" expected")
             }
+
         } else if (Lexer.symb == SymbolsAndStatements.SEMICOLON) {
             n = Node(ParserEnums.EMPTY)
             lexer.nextToken()
@@ -121,8 +122,9 @@ class Parser {
             lexer.nextToken()
         } else {
             n = Node(ParserEnums.EXPR, op1 = expr())
-            if (Lexer.symb != SymbolsAndStatements.EOF)
+            if (Lexer.symb != SymbolsAndStatements.SEMICOLON) {
                 error("\";\" expected")
+            }
             lexer.nextToken()
         }
         return n
@@ -131,7 +133,7 @@ class Parser {
     fun parse(): Node? {
         lexer.nextToken()
         val node = Node(ParserEnums.PROG, op1 = statement())
-        if(Lexer.symb != SymbolsAndStatements.EOF)
+        if (Lexer.symb != SymbolsAndStatements.EOF)
             error("Invalid statement syntax")
         return node
     }

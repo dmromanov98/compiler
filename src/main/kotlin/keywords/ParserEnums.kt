@@ -14,5 +14,6 @@ enum class ParserEnums {
     EMPTY,
     SEQ,
     EXPR,
+    PRINT,
     PROG
 }
