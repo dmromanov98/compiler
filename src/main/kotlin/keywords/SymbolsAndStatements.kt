@@ -16,5 +16,6 @@ enum class SymbolsAndStatements {
     LESS,
     EQUAL,
     SEMICOLON,
-    EOF
+    EOF,
+    PRINT
 }

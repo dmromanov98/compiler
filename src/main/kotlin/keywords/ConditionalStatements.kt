@@ -4,7 +4,8 @@ enum class ConditionalStatements(val keyWord: String) {
     IF("if"),
     ELSE("else"),
     DO("do"),
-    WHILE("while");
+    WHILE("while"),
+    PRINT("print");
 
     companion object {
         @JvmStatic
