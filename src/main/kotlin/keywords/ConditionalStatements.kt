@@ -3,7 +3,6 @@ package keywords
 enum class ConditionalStatements(val keyWord: String) {
     IF("if"),
     ELSE("else"),
-    DO("do"),
     WHILE("while"),
     PRINT("print");
 

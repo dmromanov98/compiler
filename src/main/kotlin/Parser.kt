@@ -97,23 +97,13 @@ class Parser {
             n = Node(ParserEnums.WHILE)
             lexer.nextToken()
             n = n!!.copy(op1 = parenExpr(), op2 = statement())
-        } else if (Lexer.symb == SymbolsAndStatements.DO) {
-            n = Node(ParserEnums.DO)
-            lexer.nextToken()
-            n = n!!.copy(op1 = statement())
-            if (Lexer.symb != SymbolsAndStatements.WHILE) {
-                error("\"while\" expected")
-            }
-            lexer.nextToken()
-            n = n!!.copy(op2 = parenExpr())
-
-            if (Lexer.symb == SymbolsAndStatements.SEMICOLON) {
-                error("\";\" expected")
-            }
-
         } else if (Lexer.symb == SymbolsAndStatements.SEMICOLON) {
             n = Node(ParserEnums.EMPTY)
             lexer.nextToken()
+        } else if (Lexer.symb == SymbolsAndStatements.PRINT) {
+            n = Node(ParserEnums.PRINT)
+            lexer.nextToken()
+            n = n!!.copy(op1 = expr())
         } else if (Lexer.symb == SymbolsAndStatements.LBRA) {
             n = Node(ParserEnums.EMPTY)
             lexer.nextToken()

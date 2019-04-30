@@ -6,7 +6,6 @@ enum class SymbolsAndStatements {
     IF,
     ELSE,
     WHILE,
-    DO,
     LBRA,
     RBRA,
     LPAR,
