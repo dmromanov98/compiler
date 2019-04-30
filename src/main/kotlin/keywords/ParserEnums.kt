@@ -10,7 +10,6 @@ enum class ParserEnums {
     IF1,
     IF2,
     WHILE,
-    DO,
     EMPTY,
     SEQ,
     EXPR,

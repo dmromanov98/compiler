@@ -13,31 +13,35 @@ class Compiler {
     fun compile(node: Node?): MutableList<Any?> {
         when {
             (node!!.kind == ParserEnums.VAR) -> {
-                generation(Instructions.IFETCH)
+                generation(Instructions.FETCH)
                 generation(node.value)
             }
             (node.kind == ParserEnums.CONST) -> {
-                generation(Instructions.IPUSH)
+                generation(Instructions.PUSH)
                 generation(node.value)
             }
             (node.kind == ParserEnums.ADD) -> {
                 compile(node.op1)
                 compile(node.op2)
-                generation(Instructions.IADD)
+                generation(Instructions.ADD)
             }
             (node.kind == ParserEnums.SUB) -> {
                 compile(node.op1)
                 compile(node.op2)
-                generation(Instructions.ISUB)
+                generation(Instructions.SUB)
+            }
+            (node.kind == ParserEnums.PRINT)->{
+                generation(Instructions.OUT)
+                compile(node.op1)
             }
             (node.kind == ParserEnums.LT) -> {
                 compile(node.op1)
                 compile(node.op2)
-                generation(Instructions.ILT)
+                generation(Instructions.LT)
             }
             (node.kind == ParserEnums.SET) -> {
                 compile(node.op2)
-                generation(Instructions.ISTORE)
+                generation(Instructions.STORE)
                 generation(node.op1!!.value)
             }
             (node.kind == ParserEnums.IF1) -> {
@@ -72,20 +76,13 @@ class Compiler {
                 generation(addr1)
                 program[addr2] = pc
             }
-            (node.kind == ParserEnums.DO) -> {
-                val addr = pc
-                compile(node.op1)
-                compile(node.op2)
-                generation(Instructions.JNZ)
-                generation(addr)
-            }
             (node.kind == ParserEnums.SEQ) -> {
                 compile(node.op1)
                 compile(node.op2)
             }
             (node.kind == ParserEnums.EXPR) -> {
                 compile(node.op1)
-                generation(Instructions.IPOP)
+                generation(Instructions.POP)
             }
             (node.kind == ParserEnums.PROG) -> {
                 compile(node.op1)

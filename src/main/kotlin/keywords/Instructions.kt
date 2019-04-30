@@ -14,15 +14,16 @@ JMP   a - go to address a
 HALT    - exit
  */
 enum class Instructions{
-    IFETCH,
-    ISTORE,
-    IPUSH,
-    IPOP,
-    IADD,
-    ISUB,
-    ILT,
+    FETCH,
+    STORE,
+    PUSH,
+    POP,
+    ADD,
+    SUB,
+    LT,
     JZ,
     JNZ,
     JMP,
-    HALT
+    HALT,
+    OUT
 }
