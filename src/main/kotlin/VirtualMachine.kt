@@ -4,7 +4,7 @@ import java.util.*
 class VirtualMachine {
 
     fun run(program: MutableList<Any?>) {
-        var ar = arrayOfNulls<Int>(26)
+        val ar = arrayOfNulls<Int>(26)
         val stack = Stack<Int>()
         var pc = 0
         var arg: Any? = null
