@@ -1,9 +1,11 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.3.21'
 }
-
+apply plugin: 'application'
 group 'ru.rtuitlab'
 version '1.0-SNAPSHOT'
+
+mainClassName = 'MainKt'
 
 repositories {
     mavenCentral()
@@ -11,6 +13,17 @@ repositories {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+}
+
+jar {
+    baseName = "compiler"
+    version = "0.1.0"
+    manifest {
+        attributes(
+                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+                'Main-Class': 'MainKt'
+        )
+    }
 }
 
 compileKotlin {
