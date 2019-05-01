@@ -12,3 +12,4 @@ fun main(args: Array<String>) {
     val virtualMachine = VirtualMachine()
     virtualMachine.run(program)
 }
+
