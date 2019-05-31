@@ -1,6 +1,10 @@
 {
     a = 1;
     b = 5;
+    aa.add(5);
+    aa.add(15);
+    aa.remove(0);
+    c = aa.get(0);
     while (a < b) {
         a = a + 3;
     }

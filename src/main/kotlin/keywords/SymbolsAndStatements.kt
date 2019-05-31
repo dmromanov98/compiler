@@ -16,5 +16,9 @@ enum class SymbolsAndStatements {
     EQUAL,
     SEMICOLON,
     EOF,
-    PRINT
+    PRINT,
+    IDLL,
+    ADDLL,
+    GETLL,
+    REMOVELL
 }
