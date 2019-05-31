@@ -7,7 +7,10 @@ enum class ConditionalStatements(val keyWord: String) {
     PRINT("print"),
     ADDLL("add"),
     GETLL("get"),
-    REMOVELL("remove");
+    REMOVELL("remove"),
+    CONTAINSHS("contains"),
+    REMOVEHS("removeelement"),
+    ADDHS("addelement");
 
     companion object {
         @JvmStatic

@@ -2,13 +2,14 @@ package main.kotlin
 
 import main.kotlin.keywords.Instructions
 import java.util.*
+import kotlin.collections.HashSet
 
 class VirtualMachine {
 
     fun run(program: MutableList<Any?>) {
         val ar = arrayOfNulls<Int>(26)
         val llAr = arrayOfNulls<LinkedList<Int>>(26)
-
+        val hsAr = arrayOfNulls<HashSet<Int>>(26)
         val stack = Stack<Int>()
         var pc = 0
         var arg: Any? = null
@@ -21,24 +22,48 @@ class VirtualMachine {
                 if (arg is Char || arg is String) stack.add(ar[arg.hashCode() - 97])
                 pc += 2
             } else if (op == Instructions.STORE) {
-                if (arg.toString().length == 2){
-                    val position = arg.toString()[0].hashCode() - 97
-                    var list = llAr[position]
-                    if(list == null)
-                        list = LinkedList()
-                    list.add(stack.pop())
-                    llAr[position] = list
-                }else
-                    ar[arg.hashCode() - 97] = stack.pop()
+                when {
+
+                    arg.toString().length == 2 -> {
+                        val position = arg.toString()[0].hashCode() - 97
+                        var list = llAr[position]
+                        if (list == null)
+                            list = LinkedList()
+                        list.add(stack.pop())
+                        llAr[position] = list
+                    }
+
+                    arg.toString().length == 3 -> {
+                        val position = arg.toString()[0].hashCode() - 97
+                        var set = hsAr[position]
+                        if (set == null)
+                            set = HashSet()
+                        set.add(stack.pop())
+                        hsAr[position] = set
+                    }
+
+                    else -> ar[arg.hashCode() - 97] = stack.pop()
+                }
                 pc += 2
             } else if (op == Instructions.PUSH) {
                 if (arg is String) {
                     val args = arg.split(",")
-                    if(args.size == 2){
+                    if (args.size == 2) {
                         val position = args[0][0].hashCode() - 97
-                        val value = llAr[position]?.get(args[1].toInt())
+
+                        val value = if (args[0].length == 2) {
+                            llAr[position]?.get(args[1].toInt())
+                        } else if (args[0].length == 3){
+                            if (hsAr[position]?.contains(args[1].toInt())!!)
+                                1
+                            else
+                                0
+                        } else {
+                            0
+                        }
+
                         stack.add(value)
-                    }else
+                    } else
                         stack.add(arg.toIntOrNull())
                 }
                 pc += 2
@@ -56,23 +81,42 @@ class VirtualMachine {
                 pc += 1
             } else if (op == Instructions.OUT) {
                 arg = program[pc + 2]
-                if (arg.toString().length == 2){
-                    val position = arg.toString()[0].hashCode() - 97
-                    var result = ""
-                    llAr[position]?.forEach{
-                        result += "$it ,"
+                when {
+                    arg.toString().length == 2 -> {
+                        val position = arg.toString()[0].hashCode() - 97
+                        var result = ""
+                        llAr[position]?.forEach {
+                            result += "$it ,"
+                        }
+                        println("( ${result.removeSuffix(",")})")
                     }
-                    println("( ${result.removeSuffix(",")})")
-                }else
-                    println(ar[arg.hashCode() - 97])
+                    arg.toString().length == 3 -> {
+                        val position = arg.toString()[0].hashCode() - 97
+                        var result = ""
+                        hsAr[position]?.forEach {
+                            result += "$it ,"
+                        }
+                        println("{ ${result.removeSuffix(",")}}")
+                    }
+                    else -> println(ar[arg.hashCode() - 97])
+                }
                 pc += 3
-            } else if (op == Instructions.DELFROMLL){
+            } else if (op == Instructions.DELFROMLL) {
                 val position = arg.toString()[0].hashCode() - 97
                 val list = llAr[position]
 
                 list?.remove(stack.pop())
 
                 llAr[position] = list
+                pc += 2
+            } else if (op == Instructions.DELFROMHS) {
+                val position = arg.toString()[0].hashCode() - 97
+
+                val set = hsAr[position]
+
+                set?.remove(stack.pop())
+
+                hsAr[position] = set
                 pc += 2
             }else if (op == Instructions.LT) {
                 if (stack[stack.size - 2] < stack[stack.size - 1])

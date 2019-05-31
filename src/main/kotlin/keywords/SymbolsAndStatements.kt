@@ -17,9 +17,11 @@ enum class SymbolsAndStatements {
     SEMICOLON,
     EOF,
     PRINT,
-    IDLL,
     ADDLL,
     GETLL,
     REMOVELL,
-    DOT
+    DOT,
+    CONTAINSHS,
+    REMOVEHS,
+    ADDHS
 }

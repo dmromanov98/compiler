@@ -1,3 +1,4 @@
+import main.kotlin.Lexer
 import main.kotlin.keywords.ParserEnums
 import main.kotlin.keywords.SymbolsAndStatements
 import kotlin.system.exitProcess
@@ -20,7 +21,7 @@ class Parser {
             val n = Node(ParserEnums.VAR, Lexer.value!!)
             lexer.nextToken()
 
-            if (n.value!!.length == 2 && Lexer.symb == SymbolsAndStatements.DOT)
+            if ((n.value!!.length == 2 || n.value!!.length == 3) && Lexer.symb == SymbolsAndStatements.DOT)
                 lexer.nextToken()
             else if (n.value.length == 2)
                 error(" \".\" expected")
@@ -63,25 +64,29 @@ class Parser {
     private fun expr(): Node? {
         if (Lexer.symb != SymbolsAndStatements.ID)
             return test()
-        var n = if(n!!.kind == ParserEnums.PRINT){
+
+        var n = if (n!!.kind == ParserEnums.PRINT) {
             val value = Lexer.value
-            //lexer.nextToken()
-            val n1 = Node(ParserEnums.VAR , value)
+            val n1 = Node(ParserEnums.VAR, value)
             lexer.nextToken()
             n1
-        }else
-             test()
+        } else
+            test()
 
         if (n != null && n.kind == ParserEnums.VAR && (Lexer.symb == SymbolsAndStatements.EQUAL ||
-                    (Lexer.symb == SymbolsAndStatements.GETLL))) {
+                    (Lexer.symb == SymbolsAndStatements.GETLL) || (Lexer.symb == SymbolsAndStatements.CONTAINSHS))
+        ) {
 
             n = if (Lexer.symb == SymbolsAndStatements.GETLL) {
                 lexer.nextToken()
                 Node(ParserEnums.GETFROMLL, op2 = n, op3 = parenExpr())
-            }else {
+            } else if (Lexer.symb == SymbolsAndStatements.CONTAINSHS) {
+                lexer.nextToken()
+                Node(ParserEnums.CONTAINSINHS, op2 = n, op3 = parenExpr())
+            } else {
                 lexer.nextToken()
                 val n1 = expr()!!
-                if(n1.op2 != null && n1.op3 != null)
+                if (n1.op2 != null && n1.op3 != null)
                     Node(ParserEnums.SET, op1 = n, op2 = n1.op2, op3 = n1.op3)
                 else
                     Node(ParserEnums.SET, op1 = n, op2 = n1)
@@ -93,6 +98,12 @@ class Parser {
         } else if (n != null && n.kind == ParserEnums.VAR && Lexer.symb == SymbolsAndStatements.REMOVELL) {
             lexer.nextToken()
             n = Node(ParserEnums.REMOVEFROMLL, op1 = n, op2 = parenExpr())
+        } else if (n != null && n.kind == ParserEnums.VAR && Lexer.symb == SymbolsAndStatements.ADDHS) {
+            lexer.nextToken()
+            n = Node(ParserEnums.ADDTOHS, op1 = n, op2 = parenExpr())
+        } else if (n != null && n.kind == ParserEnums.VAR && Lexer.symb == SymbolsAndStatements.REMOVEHS) {
+            lexer.nextToken()
+            n = Node(ParserEnums.REMOVEFROMHS, op1 = n, op2 = parenExpr())
         }
         return n
     }
@@ -146,7 +157,6 @@ class Parser {
             n = Node(ParserEnums.EXPR, op1 = expr())
 
             if (Lexer.symb != SymbolsAndStatements.SEMICOLON) {
-                println(Lexer.symb)
                 error("\";\" expected")
             }
             lexer.nextToken()

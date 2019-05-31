@@ -1,6 +1,5 @@
 package main.kotlin
 
-import Lexer
 import Parser
 
 fun main(args: Array<String>) {

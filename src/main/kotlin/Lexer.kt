@@ -1,3 +1,5 @@
+package main.kotlin
+
 import keywords.ConditionalStatements
 import main.kotlin.keywords.Symbols
 import main.kotlin.keywords.SymbolsAndStatements
@@ -32,7 +34,7 @@ class Lexer {
      * @param message - error message
      */
     private fun error(message: String) {
-        println("Lexer error: $message")
+        println("main.kotlin.Lexer error: $message")
         exitProcess(15)
     }
 
@@ -85,21 +87,20 @@ class Lexer {
         var tmpSymb: SymbolsAndStatements? = null
         var tmpValue: String? = null
         while (tmpSymb == null) {
-            //println("$charValue ${Symbols.isSymb(charValue!!)}")
+
             when {
                 (charValue == null) -> tmpSymb = SymbolsAndStatements.EOF
 
                 charValue!!.isWhitespace() -> charValue = nextChar()
 
                 Symbols.isSymb(charValue!!) -> {
-
                     when (val symbol = Symbols.getSymbolByChar(charValue!!)) {
                         null -> error("Character definition error: $charValue")
                         else -> {
                             tmpSymb = SymbolsAndStatements.valueOf(symbol.name)
                         }
                     }
-                    //println(charValue)
+
                     charValue = nextChar()
                 }
 
@@ -119,7 +120,6 @@ class Lexer {
                         ident += charValue!!.toLowerCase()
                         charValue = nextChar()
                     }
-                    //println(charValue!!)
                     when {
                         ConditionalStatements.isKeyWord(ident) ->
                             when (val keyWord = ConditionalStatements.getSymbolByKeyWord(ident)) {
@@ -128,15 +128,13 @@ class Lexer {
                                     tmpSymb = SymbolsAndStatements.valueOf(keyWord.name)
                                 }
                             }
-                        (ident.length == 1) || (ident.length == 2)-> {
+                        (ident.length == 1) || (ident.length == 2) || (ident.length == 3)-> {
                             tmpSymb = SymbolsAndStatements.ID
                             tmpValue = ident
-                            //charValue = nextChar()
                         }
 
                         else -> error("Unexpected symbol: $charValue")
                     }
-                    //charValue = nextChar()
                 }
 
             }

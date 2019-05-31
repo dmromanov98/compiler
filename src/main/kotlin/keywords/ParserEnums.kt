@@ -17,5 +17,8 @@ enum class ParserEnums {
     PROG,
     ADDTOLL,
     GETFROMLL,
-    REMOVEFROMLL
+    REMOVEFROMLL,
+    ADDTOHS,
+    REMOVEFROMHS,
+    CONTAINSINHS
 }

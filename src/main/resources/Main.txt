@@ -1,12 +1,19 @@
 {
     a = 1;
     b = 5;
-    aa.add(5);
-    aa.add(15);
-    aa.remove(5);
-    c = aa.get(0);
-    while (a < b) {
-        a = a + 3;
+    aaa.addElement(5);
+    aaa.addElement(15);
+    aaa.removeElement(6);
+    c = aaa.contains(4);
+    aa.add(10);
+    aa.add(45);
+    aa.remove(10);
+    k = aa.get(0);
+    print(aa);
+    print(aaa);
+
+    if (c < 1){
+        a = a + b;
     }
-    print(c)
+    print(a)
 }

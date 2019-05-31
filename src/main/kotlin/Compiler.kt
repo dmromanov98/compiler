@@ -29,6 +29,16 @@ class Compiler {
                 generation(Instructions.DELFROMLL)
                 generation(node.op1!!.value)
             }
+            (node.kind == ParserEnums.REMOVEFROMHS) -> {
+                compile(node.op2)
+                generation(Instructions.DELFROMHS)
+                generation(node.op1!!.value)
+            }
+            (node.kind == ParserEnums.ADDTOHS) -> {
+                compile(node.op2)
+                generation(Instructions.STORE)
+                generation(node.op1!!.value)
+            }
             (node.kind == ParserEnums.CONST) -> {
                 generation(Instructions.PUSH)
                 generation(node.value)

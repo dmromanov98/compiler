@@ -27,5 +27,6 @@ enum class Instructions{
     JMP,
     HALT,
     OUT,
-    DELFROMLL
+    DELFROMLL,
+    DELFROMHS
 }
