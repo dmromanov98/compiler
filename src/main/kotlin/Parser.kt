@@ -87,11 +87,11 @@ class Parser {
 
         lexer.nextToken()
 
-        println("parenExpr after ( = ${Lexer.symb} ${Lexer.value}")
+        //println("parenExpr after ( = ${Lexer.symb} ${Lexer.value}")
 
         val n = expr()
 
-        println("parenExpr after expr = ${Lexer.symb} ${Lexer.value}")
+        //println("parenExpr after expr = ${Lexer.symb} ${Lexer.value}")
         if (Lexer.symb != SymbolsAndStatements.RPAR)
             error("\")\" expected")
 
