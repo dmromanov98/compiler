@@ -14,5 +14,8 @@ enum class ParserEnums {
     SEQ,
     EXPR,
     PRINT,
-    PROG
+    PROG,
+    ADDTOLL,
+    GETFROMLL,
+    REMOVEFROMLL
 }

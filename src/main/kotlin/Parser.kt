@@ -25,7 +25,7 @@ class Parser {
             lexer.nextToken()
             n
         } else {
-            return parenExpr()
+            parenExpr()
         }
     }
 
@@ -47,6 +47,7 @@ class Parser {
 
     private fun test(): Node? {
         var n = summa()
+        println(Lexer.symb)
         if (Lexer.symb == SymbolsAndStatements.LESS) {
             lexer.nextToken()
             n = Node(ParserEnums.LT, op1 = n, op2 = summa())
@@ -58,22 +59,39 @@ class Parser {
         if (Lexer.symb != SymbolsAndStatements.ID)
             return test()
         var n = test()
-        if (n != null && n.kind == ParserEnums.VAR && Lexer.symb == SymbolsAndStatements.EQUAL) {
+        if (n != null && n.kind == ParserEnums.VAR && (Lexer.symb == SymbolsAndStatements.EQUAL ||
+                    (Lexer.symb == SymbolsAndStatements.ID && Lexer.value != null && Lexer.value?.length == 2))) {
             lexer.nextToken()
-            n = Node(ParserEnums.SET, op1 = n, op2 = expr())
+
+            n = if (Lexer.symb == SymbolsAndStatements.GETLL) {
+                lexer.nextToken()
+                Node(ParserEnums.SET, op1 = n, op2 = parenExpr())
+            }else
+                Node(ParserEnums.SET, op1 = n, op2 = expr())
+
+        } else if (n != null && n.kind == ParserEnums.VAR && Lexer.symb == SymbolsAndStatements.ADDLL) {
+            lexer.nextToken()
+            n = Node(ParserEnums.ADDTOLL, op1 = n, op2 = parenExpr())
+        } else if (n != null && n.kind == ParserEnums.VAR && Lexer.symb == SymbolsAndStatements.REMOVELL) {
+            lexer.nextToken()
+            n = Node(ParserEnums.REMOVEFROMLL, op1 = n, op2 = parenExpr())
         }
         return n
     }
 
     private fun parenExpr(): Node? {
 
+        //println("${Lexer.symb} HERE")
         if (Lexer.symb != SymbolsAndStatements.LPAR)
             error("\"(\" expected")
 
         lexer.nextToken()
 
+        println("parenExpr after ( = ${Lexer.symb} ${Lexer.value}")
+
         val n = expr()
 
+        println("parenExpr after expr = ${Lexer.symb} ${Lexer.value}")
         if (Lexer.symb != SymbolsAndStatements.RPAR)
             error("\")\" expected")
 
@@ -112,6 +130,10 @@ class Parser {
             lexer.nextToken()
         } else {
             n = Node(ParserEnums.EXPR, op1 = expr())
+            //lexer.nextToken()
+            //println(Lexer.symb)
+            if (Lexer.symb != SymbolsAndStatements.SEMICOLON)
+                lexer.nextToken()
             if (Lexer.symb != SymbolsAndStatements.SEMICOLON) {
                 error("\";\" expected")
             }

@@ -124,10 +124,13 @@ class Lexer {
                                     tmpSymb = SymbolsAndStatements.valueOf(keyWord.name)
                                 }
                             }
-                        ident.length == 1 -> {
+                        (ident.length == 1) || (ident.length == 2) -> {
                             tmpSymb = SymbolsAndStatements.ID
                             tmpValue = ident
+                            charValue = nextChar()
+
                         }
+
                         else -> error("Unexpected symbol: $charValue")
                     }
                 }
