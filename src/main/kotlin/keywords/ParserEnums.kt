@@ -1,4 +1,4 @@
-package keywords
+package main.kotlin.keywords
 
 enum class ParserEnums {
     VAR,

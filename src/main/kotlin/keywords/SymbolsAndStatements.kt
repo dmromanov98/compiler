@@ -1,4 +1,4 @@
-package keywords
+package main.kotlin.keywords
 
 enum class SymbolsAndStatements {
     NUM,
@@ -20,5 +20,6 @@ enum class SymbolsAndStatements {
     IDLL,
     ADDLL,
     GETLL,
-    REMOVELL
+    REMOVELL,
+    DOT
 }

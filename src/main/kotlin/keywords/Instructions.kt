@@ -1,7 +1,7 @@
-package keywords
+package main.kotlin.keywords
 
 /**
- * FETCH x - put x value on stack values
+FETCH x - put x value on stack values
 STORE x - save in x variable value from top of the stack
 PUSH  n - put n on top of the stack
 POP     - delete number from top of the stack
@@ -12,6 +12,7 @@ JZ    a - if 0 on top of the stack -> go to address a
 JNZ   a - if !0 on top of the stack -> go to address a
 JMP   a - go to address a
 HALT    - exit
+ DELFROMLL - delete value from ll
  */
 enum class Instructions{
     FETCH,
@@ -25,5 +26,6 @@ enum class Instructions{
     JNZ,
     JMP,
     HALT,
-    OUT
+    OUT,
+    DELFROMLL
 }
