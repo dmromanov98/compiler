@@ -1,4 +1,4 @@
-import keywords.ParserEnums
+import main.kotlin.keywords.ParserEnums
 
 data class Node(
     val kind: ParserEnums,

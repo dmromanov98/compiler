@@ -1,4 +1,4 @@
-package keywords
+package main.kotlin.keywords
 
 enum class Symbols(val symbol: Char) {
     LBRA('{'),
@@ -9,7 +9,8 @@ enum class Symbols(val symbol: Char) {
     RPAR(')'),
     PLUS('+'),
     MINUS('-'),
-    LESS('<');
+    LESS('<'),
+    DOT('.');
 
     companion object {
         @JvmStatic

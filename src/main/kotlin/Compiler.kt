@@ -1,5 +1,8 @@
-import keywords.Instructions
-import keywords.ParserEnums
+package main.kotlin
+
+import Node
+import main.kotlin.keywords.Instructions
+import main.kotlin.keywords.ParserEnums
 
 class Compiler {
     var program = mutableListOf<Any?>()
@@ -15,6 +18,16 @@ class Compiler {
             (node!!.kind == ParserEnums.VAR) -> {
                 generation(Instructions.FETCH)
                 generation(node.value)
+            }
+            (node.kind == ParserEnums.ADDTOLL) -> {
+                compile(node.op2)
+                generation(Instructions.STORE)
+                generation(node.op1!!.value)
+            }
+            (node.kind == ParserEnums.REMOVEFROMLL) -> {
+                compile(node.op2)
+                generation(Instructions.DELFROMLL)
+                generation(node.op1!!.value)
             }
             (node.kind == ParserEnums.CONST) -> {
                 generation(Instructions.PUSH)
@@ -40,9 +53,16 @@ class Compiler {
                 generation(Instructions.LT)
             }
             (node.kind == ParserEnums.SET) -> {
-                compile(node.op2)
-                generation(Instructions.STORE)
-                generation(node.op1!!.value)
+                if(node.op1 != null && node.op2 != null && node.op3 != null){
+                    generation(Instructions.PUSH)
+                    generation("${node.op2.value},${node.op3.value}")
+                    generation(Instructions.STORE)
+                    generation(node.op1.value)
+                }else {
+                    compile(node.op2)
+                    generation(Instructions.STORE)
+                    generation(node.op1!!.value)
+                }
             }
             (node.kind == ParserEnums.IF1) -> {
                 compile(node.op1)
