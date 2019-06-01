@@ -7,9 +7,13 @@ import kotlin.collections.HashSet
 class VirtualMachine {
 
     fun run(program: MutableList<Any?>) {
+
         val ar = arrayOfNulls<Int>(26)
+
         val llAr = arrayOfNulls<LinkedList<Int>>(26)
+
         val hsAr = arrayOfNulls<HashSet<Int>>(26)
+
         val stack = Stack<Int>()
         var pc = 0
         var arg: Any? = null
