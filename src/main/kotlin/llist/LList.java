@@ -22,13 +22,15 @@ public class LList<E> {
     }
 
     public E get(int position) {
-        E[] els = getElements();
+        E[] els = getAllElements();
         return els[els.length - 1 - position];
     }
 
     public void remove(int position) {
-        E[] els = getElements();
+        E[] els = getAllElements();
         els[els.length - 1 - position] = null;
+        if (els.length > 0 && els.length - 1 - position < els.length)
+            size--;
         first = null;
         last = null;
         for (int i = els.length - 1; i >= 0; i--) {
@@ -36,18 +38,22 @@ public class LList<E> {
                 add(els[i]);
         }
 
-
     }
 
-    private E[] getElements() {
+    public List<E> getElements() {
         List<E> lst = new ArrayList<>();
         Entry<E> entries = last;
-        while (entries.prev != null) {
+        while (entries != null && entries.prev != null) {
             lst.add(entries.item);
             entries = entries.prev;
         }
-        lst.add(entries.item);
-        return (E[]) lst.toArray();
+        if (entries != null)
+            lst.add(entries.item);
+        return lst;
+    }
+
+    private E[] getAllElements() {
+        return (E[]) getElements().toArray();
     }
 
     private static class Entry<E> {

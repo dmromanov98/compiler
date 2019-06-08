@@ -1,6 +1,8 @@
 package main.kotlin
 
+import main.kotlin.hset.HSet
 import main.kotlin.keywords.Instructions
+import main.kotlin.llist.LList
 import java.util.*
 import kotlin.collections.HashSet
 
@@ -10,9 +12,9 @@ class VirtualMachine {
 
         val ar = arrayOfNulls<Int>(26)
 
-        val llAr = arrayOfNulls<LinkedList<Int>>(26)
+        val llAr = arrayOfNulls<LList<Int>>(26)
 
-        val hsAr = arrayOfNulls<HashSet<Int>>(26)
+        val hsAr = arrayOfNulls<HSet<Int>>(26)
 
         val stack = Stack<Int>()
         var pc = 0
@@ -32,7 +34,7 @@ class VirtualMachine {
                         val position = arg.toString()[0].hashCode() - 97
                         var list = llAr[position]
                         if (list == null)
-                            list = LinkedList()
+                            list = LList()
                         list.add(stack.pop())
                         llAr[position] = list
                     }
@@ -41,7 +43,7 @@ class VirtualMachine {
                         val position = arg.toString()[0].hashCode() - 97
                         var set = hsAr[position]
                         if (set == null)
-                            set = HashSet()
+                            set = HSet()
                         set.add(stack.pop())
                         hsAr[position] = set
                     }
@@ -89,7 +91,9 @@ class VirtualMachine {
                     arg.toString().length == 2 -> {
                         val position = arg.toString()[0].hashCode() - 97
                         var result = ""
-                        llAr[position]?.forEach {
+                        //val elements = llAr[position]?.elements
+                        //println(elements[0])
+                        llAr[position]?.elements!!.forEach {
                             result += "$it ,"
                         }
                         println("( ${result.removeSuffix(",")})")
@@ -97,7 +101,7 @@ class VirtualMachine {
                     arg.toString().length == 3 -> {
                         val position = arg.toString()[0].hashCode() - 97
                         var result = ""
-                        hsAr[position]?.forEach {
+                        hsAr[position]?.elements!!.forEach {
                             result += "$it ,"
                         }
                         println("{ ${result.removeSuffix(",")}}")
