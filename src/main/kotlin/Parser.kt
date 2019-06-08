@@ -16,6 +16,18 @@ class Parser {
         exitProcess(16)
     }
 
+    private fun llAdd(){
+
+    }
+
+    private fun llRemove(){
+
+    }
+
+    private fun set(){
+
+    }
+
     private fun term(): Node? {
         return if (Lexer.symb != null && Lexer.symb == SymbolsAndStatements.ID) {
             val n = Node(ParserEnums.VAR, Lexer.value!!)

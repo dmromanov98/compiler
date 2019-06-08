@@ -5,7 +5,10 @@
     aaa.addElement(15);
     aaa.removeElement(6);
     c = aaa.contains(4);
+
     aa.add(10);
+
+
     aa.add(45);
     aa.remove(10);
     k = aa.get(0);

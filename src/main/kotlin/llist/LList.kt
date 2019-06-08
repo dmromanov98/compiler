@@ -1,29 +1,53 @@
 package main.kotlin.llist
 
+import java.util.*
+
 class LList<T> {
     var size: Int = 0
-    lateinit var first: Entry<T>
-    lateinit var last: Entry<T>
+    var first: Entry<T>? = null
+    var last: Entry<T>? = null
+
+//    fun add(element: T) {
+//        when (size) {
+//            0 -> {
+//                first = Entry(currentElement = element)
+//                last = first.copy()
+//                size++
+//            }
+//            1 -> {
+//                val l = last
+//                val newNode = Entry(element, null, l)
+//                last = newNode
+//
+//                if (l == null)
+//                    first = newNode
+//                else
+//                    l.next = newNode
+//
+//                size++
+//            }
+//            else -> {
+//                last = Entry(currentElement = element, previousElement = last)
+//                last = last.previousElement!!.copy(nextElement = last)
+//                size++
+//            }
+//        }
+//    }
 
     fun add(element: T) {
-        when (size) {
-            0 -> {
-                first = Entry(currentElement = element)
-                last = first
-                size++
-            }
-            1 -> {
-                last = Entry(currentElement = element, previousElement = first)
-                first = first.copy(nextElement = last)
-                last.copy(previousElement = first)
-                size++
-            }
-            else -> {
-                last = Entry(currentElement = element, previousElement = last)
-                last = last.previousElement!!.copy(nextElement = last)
-                size++
-            }
-        }
+
+        var l = last
+        val newNode = Entry(element, null, l)
+        last = newNode
+
+        if (l == null)
+            first = newNode
+        else
+            last = last!!.copy(nextElement = newNode)
+            //l = l.copy(nextElement = newNode)
+
+        size++
+
     }
 
     init {
