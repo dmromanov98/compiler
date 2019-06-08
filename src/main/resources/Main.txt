@@ -18,5 +18,5 @@
     if (c < 1){
         a = a + b;
     }
-    print(a)
+    print(a);
 }

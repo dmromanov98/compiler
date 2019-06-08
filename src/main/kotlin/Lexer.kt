@@ -22,10 +22,10 @@ class Lexer {
         var filePath: String? = null
 
         @JvmStatic
-        var symb: SymbolsAndStatements? = null
+        private var symb: SymbolsAndStatements? = null
 
         @JvmStatic
-        var value: String? = null
+        private var value: String? = null
 
     }
 
@@ -128,7 +128,7 @@ class Lexer {
                                     tmpSymb = SymbolsAndStatements.valueOf(keyWord.name)
                                 }
                             }
-                        (ident.length == 1) || (ident.length == 2) || (ident.length == 3)-> {
+                        (ident.length == 1) || (ident.length == 2) || (ident.length == 3) -> {
                             tmpSymb = SymbolsAndStatements.ID
                             tmpValue = ident
                         }
@@ -142,6 +142,15 @@ class Lexer {
         }
         symb = tmpSymb
         value = tmpValue
+    }
+
+    fun getTokens(): MutableList<Token> {
+        val result = mutableListOf<Token>()
+        do {
+            nextToken()
+            result.add(Token(symb, value))
+        } while (symb != SymbolsAndStatements.EOF)
+        return result
     }
 
 }
