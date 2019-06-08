@@ -6,7 +6,7 @@ import Node
 
 class Parser {
     var tokenPosition = 0
-    lateinit var tokens: MutableList<Token>
+    var tokens: MutableList<Token>
     var n: Node? = null
 
     init {
@@ -20,18 +20,19 @@ class Parser {
             val n = Node(ParserEnums.VAR, tokens[tokenPosition].value)
             tokenPosition++
 
-            if ((n.value!!.length == 2 || n.value!!.length == 3) &&
+            if ((n.value!!.length == 2 || n.value.length == 3) &&
                 tokens[tokenPosition].key == SymbolsAndStatements.DOT
-            )
+            ) {
                 tokenPosition++
-            else if (n.value.length == 2)
+            } else if (n.value.length == 2) {
                 error(" \".\" expected")
+            }
             n
         } else if (tokens[tokenPosition].key != null &&
             tokens[tokenPosition].key == SymbolsAndStatements.NUM
         ) {
             val n = Node(ParserEnums.CONST, tokens[tokenPosition].value)
-            tokenPosition
+            tokenPosition++
             n
         } else {
             parenExpr()
@@ -131,8 +132,6 @@ class Parser {
 
         val n = expr()
 
-        tokenPosition++
-        println(tokens[tokenPosition].key)
         if (tokens[tokenPosition].key != SymbolsAndStatements.RPAR)
             error("\")\" expected")
 
@@ -185,8 +184,7 @@ class Parser {
 
     private fun otherStatements(): Node? {
         n = Node(ParserEnums.EXPR, op1 = expr())
-        tokenPosition++
-        println(tokens[tokenPosition].key)
+
         if (tokens[tokenPosition].key != SymbolsAndStatements.SEMICOLON) {
             error("\";\" expected")
         }
@@ -206,7 +204,6 @@ class Parser {
     }
 
     fun parse(): Node? {
-        //tokenPosition++
         val node = Node(ParserEnums.PROG, op1 = statement())
         if (tokens[tokenPosition].key != SymbolsAndStatements.EOF)
             error("Invalid statement syntax")

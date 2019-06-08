@@ -18,14 +18,13 @@ fun main(args: Array<String>) {
 //        println("${Lexer.symb} ${Lexer.value}")
 //
 //    }
-    Lexer.filePath!!
     val parser = Parser()
     val compiler = Compiler()
     val node = parser.parse()
     val program = compiler.compile(node)
-    program.forEach{
-        println(it)
-    }
+//    program.forEach{
+//        println(it)
+//    }
     val virtualMachine = VirtualMachine()
     virtualMachine.run(program)
 }
